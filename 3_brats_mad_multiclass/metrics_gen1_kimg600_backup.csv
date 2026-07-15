@@ -1,0 +1,2 @@
+gen,kimg,dice_mean,dice_WT,dice_TC,dice_ET,recall_WT,recall_TC,recall_ET
+1,600,0.7332,0.6841,0.7646,0.7508,0.7657,0.814,0.7683

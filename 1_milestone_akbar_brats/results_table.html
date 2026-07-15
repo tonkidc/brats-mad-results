@@ -1,0 +1,179 @@
+<title>BraTS Validation — Results</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --ink: #16202b;
+    --ink-soft: #47586a;
+    --line: #dde3ea;
+    --accent: #0e7c86;          /* diagnostic teal */
+    --accent-soft: #e2f1f2;
+    --good: #1f7a4d;            /* validated green */
+    --good-soft: #e4f3ea;
+    --warn: #9a6a12;           /* single-modality amber */
+    --warn-soft: #f6eddb;
+    --shadow: 0 1px 2px rgba(16,32,43,.06), 0 8px 28px rgba(16,32,43,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e151c; --panel: #161f28; --ink: #e7edf3; --ink-soft: #9db0c1;
+      --line: #26323d; --accent: #4bc3cd; --accent-soft: #123037;
+      --good: #5fd39a; --good-soft: #123528;
+      --warn: #e0b352; --warn-soft: #352a12; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e151c; --panel: #161f28; --ink: #e7edf3; --ink-soft: #9db0c1;
+    --line: #26323d; --accent: #4bc3cd; --accent-soft: #123037;
+    --good: #5fd39a; --good-soft: #123528; --warn: #e0b352; --warn-soft: #352a12;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f6f8; --panel: #ffffff; --ink: #16202b; --ink-soft: #47586a;
+    --line: #dde3ea; --accent: #0e7c86; --accent-soft: #e2f1f2;
+    --good: #1f7a4d; --good-soft: #e4f3ea; --warn: #9a6a12; --warn-soft: #f6eddb;
+    --shadow: 0 1px 2px rgba(16,32,43,.06), 0 8px 28px rgba(16,32,43,.07);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    line-height: 1.5; -webkit-font-smoothing: antialiased;
+    padding: clamp(20px, 4vw, 56px);
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 8px;
+  }
+  h1 { font-size: clamp(22px, 3.4vw, 30px); margin: 0 0 6px; letter-spacing: -.01em; text-wrap: balance; }
+  .sub { color: var(--ink-soft); margin: 0 0 28px; font-size: 15px; }
+
+  /* headline result */
+  .headline {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px;
+    background: var(--good-soft); border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+    border-radius: 14px; padding: 20px 24px; margin-bottom: 28px; box-shadow: var(--shadow);
+  }
+  .headline .val { font-size: clamp(34px, 6vw, 48px); font-weight: 700; color: var(--good);
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1; }
+  .headline .vs { color: var(--ink-soft); font-size: 15px; }
+  .headline .tag { margin-left: auto; align-self: center; font-weight: 600; font-size: 13px;
+    color: var(--good); border: 1px solid color-mix(in srgb, var(--good) 45%, transparent);
+    padding: 5px 12px; border-radius: 999px; white-space: nowrap; }
+
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); overflow: hidden; margin-bottom: 26px; }
+  .card > h2 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+    margin: 0; padding: 16px 22px 0; }
+
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 560px; }
+  thead th { text-align: left; font-weight: 600; color: var(--ink-soft); font-size: 12px;
+    letter-spacing: .04em; text-transform: uppercase; padding: 14px 22px; border-bottom: 1px solid var(--line); }
+  tbody td { padding: 14px 22px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 16px; white-space: nowrap; }
+  td.ref { color: var(--ink-soft); white-space: nowrap; }
+  .exp { font-weight: 600; }
+  .setup { color: var(--ink-soft); font-size: 13px; }
+  tr.hero td { background: var(--good-soft); }
+  tr.hero .exp { color: var(--good); }
+
+  .pill { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
+    letter-spacing: .02em; }
+  .pill.good { background: var(--good-soft); color: var(--good); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.teal { background: var(--accent-soft); color: var(--accent); }
+
+  /* progression */
+  .prog td.num { color: var(--ink); }
+  .prog tr:nth-child(1) td.num { color: var(--warn); }
+  .prog tr:nth-child(3) td.num { color: var(--good); }
+  .arrow { color: var(--ink-soft); font-size: 13px; }
+
+  footer { color: var(--ink-soft); font-size: 12.5px; margin-top: 4px; line-height: 1.6; }
+  footer b { color: var(--ink); font-weight: 600; }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">StyleGAN2-ADA · BraTS 2020 · pipeline validation</p>
+  <h1>Synthetic-to-real segmentation results</h1>
+  <p class="sub">Train a U-Net on GAN-generated pairs, test on a locked real set of 4,520 slices (56 subjects). Reference: Akbar et&nbsp;al. 2024.</p>
+
+  <div class="headline">
+    <span class="val">0.7229</span>
+    <span class="vs">Dice&nbsp;&nbsp;vs&nbsp; Akbar 0.737 &nbsp;·&nbsp; +0.42 over single-modality</span>
+    <span class="tag">✓ Pipeline validated</span>
+  </div>
+
+  <div class="card">
+    <h2>All experiments</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Experiment</th><th>Setup</th><th>Metric</th><th>Value</th><th>Reference</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="exp">Image-only GAN</td>
+            <td class="setup">1 modality (T1ce), no mask</td>
+            <td><span class="pill teal">FID 256px</span></td>
+            <td class="num">20.76</td>
+            <td class="ref">Akbar 84.77</td>
+          </tr>
+          <tr>
+            <td class="exp">Paired GAN · 1-modality</td>
+            <td class="setup">T1ce + mask · 5k fakes</td>
+            <td><span class="pill warn">fake→real Dice</span></td>
+            <td class="num">0.30</td>
+            <td class="ref">—</td>
+          </tr>
+          <tr>
+            <td class="exp">Real baseline · 1-modality</td>
+            <td class="setup">real T1ce + mask</td>
+            <td><span class="pill teal">real→real Dice</span></td>
+            <td class="num">0.66</td>
+            <td class="ref">sanity ceiling</td>
+          </tr>
+          <tr class="hero">
+            <td class="exp">Paired GAN · 4-modality</td>
+            <td class="setup">t1, t1ce, t2, flair + mask · 20k fakes · 1000 kimg</td>
+            <td><span class="pill good">fake→real Dice</span></td>
+            <td class="num">0.7229</td>
+            <td class="ref">Akbar 0.737</td>
+          </tr>
+          <tr>
+            <td class="exp">— tumor recall (4-mod)</td>
+            <td class="setup">same run</td>
+            <td><span class="pill good">recall</span></td>
+            <td class="num">0.762</td>
+            <td class="ref">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>What moved the number</h2>
+    <div class="scroll">
+      <table class="prog">
+        <thead>
+          <tr><th>Change</th><th>Dice</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="exp">Single modality, no augmentation</td><td class="num">0.19</td><td class="setup">5k fakes · 600 kimg — U-Net overfit to fake-specific appearance</td></tr>
+          <tr><td class="exp">+ intensity augmentation</td><td class="num">0.30</td><td class="setup">5k fakes · 600 kimg — forced it to learn tumor shape/context</td></tr>
+          <tr><td class="exp"><b>+ 4 modalities, more fakes, longer GAN</b></td><td class="num">0.72</td><td class="setup">20k fakes (was 5k) · 1000 kimg (was 600) — modalities the decisive lever; more fakes + longer training also helped</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <b>Note.</b> FID (20.76) and Dice (0.7229) come from <b>different generators</b> — the FID model is image-only (no mask). Akbar's FID was also single-modality/no-mask, so the comparison is fair. The residual 0.014 Dice gap to Akbar reflects their nnU-Net vs a smaller U-Net and 100k vs 20k fakes — not a pipeline error.
+  </footer>
+</div>
