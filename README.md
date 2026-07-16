@@ -10,6 +10,9 @@ on a LOCKED real test set** (fake→real Dice, a.k.a. TSTR — Train Synthetic, 
 | 2 | **Retina MAD (IDRiD)** | Does recursive self-training collapse rare lesions first? | **Negative result** — dataset (44 imgs) too small; fakes never realistic enough (gate 0.16×) |
 | 3 | **BraTS MAD (multi-class)** | Same MAD question, on a validated large dataset | **In progress** — early signal: rare class (ET) is *robust*, not first to collapse |
 
+> **Code** for all three studies is in [`code/`](code/) (engine packages + per-study scripts/notebooks).
+> Results/plots/configs live in the three numbered folders below. No patient data or checkpoints are included.
+
 ---
 
 ## 1 · Milestone — Akbar replication  (`1_milestone_akbar_brats/`)
