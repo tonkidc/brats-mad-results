@@ -53,7 +53,8 @@ trains only on the previous generation's fakes). All generations trained at 300 
   stays the *strongest* of the three and WT (the "easy" class) stays weakest** — the opposite of the
   "rare-class-collapses-first" hypothesis. Consistent so far; needs the full 6 generations to conclude.
 - Files: `metrics.csv` (live, one row/generation), `metrics_gen1_kimg600_backup.csv` (the 600-kimg gate),
-  `gen1_probe_kimg600.json`, `brats_mad_curve.png`, `gen1_fake_sample.png` (7-channel synthetic sample).
+  `gen1_probe_kimg600.json`, `brats_mad_curve.png`, and `samples_kimg300/gen{1..4}_kimg300.png`
+  (7-channel synthetic samples, one per generation — eyeball quality across the recursion).
 
 ---
 
